@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#030b1e">
+  <title>Deep Sea Inventory System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="dark-theme">
+
+  <div class="ocean-background">
+    <div class="light-rays"></div>
+    <div id="bubblesContainer" class="bubbles-container"></div>
+    <div id="seaLifeContainer" class="sea-life-container"></div>
+    <div class="coral-reef-container">
+      <div class="coral coral-1">🪸</div>
+      <div class="coral coral-2">🪸</div>
+      <div class="coral coral-3">🪸</div>
+      <div class="coral coral-4">🪸</div>
+    </div>
+  </div>
+
+  <div class="app-wrapper">
+    
+    <header class="top-bar glass">
+      <div class="logo-group">
+        <span class="logo-icon">🌊</span>
+        <h1>AquaInventory</h1>
+      </div>
+      <div class="control-actions">
+        <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Theme">🌙</button>
+        <button id="exportBtn" class="btn btn-secondary">Export JSON</button>
+        <label class="btn btn-secondary btn-file">
+          Import JSON
+          <input type="file" id="importFile" accept=".json" hidden>
+        </label>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="dashboard-header">
+        <div class="badge-tag">Bioluminescent Data Center</div>
+        <h2>Sistem Inventaris Ruangan</h2>
+        
+        <div class="stats-grid">
+          <div class="stat-card glass glow-cyan">
+            <span class="stat-icon">📦</span>
+            <div>
+              <h4>Total Barang</h4>
+              <p id="statTotal">0</p>
+            </div>
+          </div>
+          <div class="stat-card glass glow-green">
+            <span class="stat-icon">✨</span>
+            <div>
+              <h4>Kondisi Baik</h4>
+              <p id="statBaik">0</p>
+            </div>
+          </div>
+          <div class="stat-card glass glow-gold">
+            <span class="stat-icon">⚠️</span>
+            <div>
+              <h4>Kondisi Rusak</h4>
+              <p id="statRusak">0</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid-two-columns">
+        
+        <section class="card glass">
+          <h3 id="formTitle">Tambah Barang Baru</h3>
+          <form id="itemForm">
+            <input type="hidden" id="itemId">
+
+            <div class="form-group">
+              <label for="namaBarang">Nama Barang</label>
+              <input type="text" id="namaBarang" required placeholder="Contoh: Laptop Asus ROG">
+            </div>
+
+            <div class="form-group">
+              <label for="kodeInventaris">Kode Inventaris</label>
+              <input type="text" id="kodeInventaris" required placeholder="Contoh: LAB-001">
+            </div>
+
+            <div class="form-group">
+              <label for="namaRuangan">Nama Ruangan</label>
+              <select id="namaRuangan" required>
+                <option value="">-- Pilih Ruangan --</option>
+                <option value="Lab Komputer">Lab Komputer</option>
+                <option value="Ruang Kelas">Ruang Kelas</option>
+                <option value="Perpustakaan">Perpustakaan</option>
+                <option value="Ruang Guru">Ruang Guru</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="jumlahBarang">Jumlah</label>
+                <input type="number" id="jumlahBarang" min="1" required value="1">
+              </div>
+
+              <div class="form-group">
+                <label for="kondisiBarang">Kondisi</label>
+                <select id="kondisiBarang" required>
+                  <option value="Baik">Baik</option>
+                  <option value="Rusak Ringan">Rusak Ringan</option>
+                  <option value="Rusak Berat">Rusak Berat</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan Barang</button>
+              <button type="button" id="btnCancel" class="btn btn-danger hidden">Batal</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card glass chart-card">
+          <h3>Statistik Kondisi Barang</h3>
+          <div class="canvas-container">
+            <canvas id="conditionChart"></canvas>
+          </div>
+        </section>
+
+      </div>
+
+      <section class="filter-section glass">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Cari nama atau kode barang...">
+        </div>
+        <div class="filter-dropdowns">
+          <select id="filterRuangan">
+            <option value="">Semua Ruangan</option>
+            <option value="Lab Komputer">Lab Komputer</option>
+            <option value="Ruang Kelas">Ruang Kelas</option>
+            <option value="Perpustakaan">Perpustakaan</option>
+            <option value="Ruang Guru">Ruang Guru</option>
+          </select>
+          <select id="filterKondisi">
+            <option value="">Semua Kondisi</option>
+            <option value="Baik">Baik</option>
+            <option value="Rusak Ringan">Rusak Ringan</option>
+            <option value="Rusak Berat">Rusak Berat</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="inventory-grid" id="inventoryContainer">
+        </section>
+    </main>
+
+    <footer class="glowing-footer">
+      <div class="glowing-line"></div>
+      <p>Designed with elegance by <span class="author-highlight">Vivi & Sintya</span></p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
